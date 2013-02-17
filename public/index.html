@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Polygon Editor - Untitled</title>
+
+		<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
+
+		<script src="/js/ext/jquery-1.8.2.js"></script>
+		<script src="/js/ext/bootstrap.js"></script>
+		<script src="/js/ext/webgl-utils.js"></script>
+		<script src="/js/ext/gl-matrix.js"></script>
+		<script src="/js/ext/csg.js"></script>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/browserify.js"></script>
+	</head>
+
+	<body>
+		<div id="overlay"></div>
+		<div id="modal"></div>
+
+		<div id="toolbar" class="navbar navbar-fixed-top navbar-inverse">
+			<div class="navbar-inner">
+
+				<ul class="nav pull-right">
+					<li class="dropdown hidden">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							Select <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+						</ul>
+					</li>
+
+					<li class="dropdown hidden">
+						<a id="about" class="dropdown-toggle" data-toggle="dropdown" href="#">
+							Tools <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+						</ul>
+					</li>
+
+					<li class="divider-vertical"></li>
+					<li><a href="#">GitHub</a></li>
+				</ul>
+
+				<ul class="nav">
+					<li class="dropdown hidden">
+						<a id="file" class="dropdown-toggle" data-toggle="dropdown" href="#">
+							File <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a id="new" href="#">New <span class="pull-right">N</span></a></li>
+							<li><a id="open" href="#">Open... <span class="pull-right">O</span></a></li>
+
+							<li class="divider"></li>
+							<li><a id="save" href="#">Save <span class="pull-right">S</span></a></li>
+							<li><a id="save-as" href="#">Save As... <span class="pull-right">A</span></a></li>
+
+							<li class="divider hidden"></li>
+							<li class="hidden"><a id="import" href="#">Import</a></li>
+							<li class="hidden"><a id="export" href="#">Export</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							Edit <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a id="undo" href="#">Undo <span class="pull-right">U</span></a></li>
+							<li><a id="redo" href="#">Redo <span class="pull-right">R</span></a></li>
+
+							<li class="divider"></li>
+							<li class="dropdown-submenu">
+								<a id="create" href="#">Create</a>
+
+								<ul class="dropdown-menu">
+									<li><a id="plane" href="#">Plane</a></li>
+									<li><a id="cube" href="#">Cube</a></li>
+									<li><a id="sphere" href="#">Sphere</a></li>
+									<li class="hidden"><a id="cylinder" href="#">Cylinder</a></li>
+									<li class="hidden"><a id="cone" href="#">Cone</a></li>
+									<li class="hidden"><a id="torus" href="#">Torus</a></li>
+									<li class="hidden"><a id="prism" href="#">Prism</a></li>
+									<li class="hidden"><a id="pyramid" href="#">Pyramid</a></li>
+									<li class="hidden"><a id="pipe" href="#">Pipe</a></li>
+									<li class="hidden"><a id="helix" href="#">Helix</a></li>
+									<li class="hidden"><a id="soccer-ball" href="#">Soccer Ball</a></li>
+									<li class="hidden"><a id="platonic-solid" href="#">Platonic Solid</a></li>
+
+									<li class="divider hidden"></li>
+									<li class="hidden"><a id="text" href="#">Text...</a></li>
+								</ul>
+							</li>
+
+							<li class="dropdown-submenu">
+								<a id="draw" href="#">Draw</a>
+
+								<ul class="dropdown-menu">
+									<li><a id="polygon" href="#">Polygon</a></li>
+
+									<li class="divider"></li>
+									<li><a id="line-trail" href="#">Line Trail</a></li>
+									<li><a id="line" href="#">Line</a></li>
+
+									<li class="divider"></li>
+									<li><a id="point-trail" href="#">Point Trial</a></li>
+									<li><a id="point" href="#">Point</a></li>
+								</ul>
+							</li>
+
+							<li class="divider"></li>
+							<li><a id="group" href="#">Group</a></li>
+							<li><a id="duplicate" href="#">Duplicate...</a></li>
+							<li class="hidden"><a id="center-pivot" href="#">Center Pivot</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							View <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-submenu">
+								<a id="create" href="#">Display</a>
+		
+								<ul class="dropdown-menu">
+									<li><a id="shaded" href="#">Shaded</a></li>
+									<li><a id="wireframe" href="#">Wireframe</a></li>
+
+									<li class="divider"></li>
+									<li><a id="grid" href="#">Grid</a></li>
+								</ul>
+							</li>
+		
+							<li class="dropdown-submenu">
+								<a id="create" href="#">Camera</a>
+
+								<ul class="dropdown-menu">
+									<li><a id="look-at" href="#">Look at</a></li>
+									<li><a id="goto" href="#">Goto...</a></li>
+
+									<li class="divider"></li>
+									<li><a id="frame" href="#">Frame</a></li>
+									<li><a id="frame-all" href="#">Frame All</a></li>
+
+									<li class="divider hidden"></li>
+									<li class="hidden"><a id="orthographic" href="#">Orthographic</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="sidebar">
+			<div id="outliner"></div>
+			<div id="inspector"></div>
+		</div>
+
+		<div id="viewport">
+		</div>
+	</body>
+</html>

@@ -1,0 +1,25 @@
+{
+	"name": "polygon-editor",
+	"author": "rolandpouler",
+	"version": "0.0.1",
+	"scripts": {
+		"start": "node ./server"
+	},
+	"dependencies": {
+		"require-stars": ">=0.0.5",
+		"jugglingdb": ">=0.2.0-8",
+		"browserify": ">=1.16.6",
+		"socket.io": ">=0.9.13",
+		"node-uuid": ">=1.4.0",
+		"inliner": ">=0.1.14",
+		"express": ">=3.0.5",
+		"async": ">=0.1.22",
+		"clss": ">=0.0.1",
+		"mttr": ">=0.0.1",
+		"ptns": ">=0.0.2",
+		"mrg": ">=0.0.2"
+	},
+	"devDependencies": {
+		"spc": ">=0.0.3"
+	}
+}
